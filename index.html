@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gurukrupa Interior Works | Window Estimator Pro</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <style>
+    :root {
+      --brand-dark: #111111;
+      --brand-gold: #bb9a6b;
+      --brand-gold-hover: #a3855a;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #2b2b2b;
+      --text-muted: #666666;
+      --border-color: #e6e6e6;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background-color: var(--bg-color); 
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-top: 80px; /* Space for fixed header */
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 80px;
+      background: rgba(2, 2, 2, 0.98);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--brand-gold);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* MAIN CONTAINER */
+    .container { 
+      max-width: 800px; 
+      margin: 40px auto; 
+      background: var(--card-bg); 
+      padding: 40px; 
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    }
+
+    .header-title {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    /* FORM ELEMENTS */
+    .form-group {
+      margin-bottom: 25px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    select, input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background: #fafafa;
+    }
+    select:focus, input:focus {
+      outline: none;
+      border-color: var(--brand-gold);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(187, 154, 107, 0.1);
+    }
+
+    /* WINDOW ROWS (REPLACED TABLE) */
+    .window-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .window-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 15px;
+      align-items: end;
+      background: #fdfdfd;
+      padding: 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      transition: border 0.3s;
+    }
+    .window-row:hover {
+      border-color: #d1d1d1;
+    }
+    
+    /* BUTTONS */
+    .btn {
+      padding: 14px 24px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-secondary {
+      background: #f0f0f0;
+      color: var(--brand-dark);
+    }
+    .btn-secondary:hover {
+      background: #e4e4e4;
+      transform: translateY(-2px);
+    }
+    .btn-primary {
+      background: var(--brand-dark);
+      color: #fff;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 16px;
+      padding: 16px;
+    }
+    .btn-primary:hover {
+      background: var(--brand-gold);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(187, 154, 107, 0.3);
+    }
+    .btn-delete {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s;
+    }
+    .btn-delete:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    /* RESULTS SECTION */
+    .result { 
+      margin-top: 30px; 
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    .result.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .estimate-card {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, #2a2a2a 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 25px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    .estimate-card h3 {
+      font-weight: 400;
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 5px;
+    }
+    .estimate-card .total-price {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--brand-gold);
+      margin-bottom: 15px;
+    }
+    .estimate-badges {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(255,255,255,0.1);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 14px;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .breakdown-item {
+      background: #f8f8f8;
+      padding: 15px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--border-color);
+    }
+    .breakdown-item span { color: var(--text-muted); font-size: 14px;}
+    .breakdown-item strong { font-weight: 600; color: var(--brand-dark); }
+
+    .material-list {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .material-header {
+      background: #f8f8f8;
+      padding: 15px 20px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .material-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .material-row:last-child { border-bottom: none; }
+    .material-row span.qty { color: var(--text-muted); font-size: 13px; }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 640px) {
+      .container {
+        margin: 20px;
+        padding: 25px;
+        width: auto;
+      }
+      .window-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .btn-delete {
+        width: 100%;
+        height: 45px;
+        margin-top: 5px;
+      }
+      .estimate-card .total-price {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>
+    <i class="bi bi-calculator-fill"></i>
+    <span>Gurukrupa Estimator</span>
+  </h1>
+</header>
+
+<div class="container">
+  <h2 class="header-title">Window Estimator Pro</h2>
+
+  <div class="form-group">
+    <label for="type">Select Window Series</label>
+    <select id="type">
+      <option value="3dumal">3 Track DUMAL</option>
+      <option value="2dumal">2 Track DUMAL</option>
+      <option value="34series">3 Track 3/4 Series</option>
+      <option value="2_34">2 Track 3/4 Series</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Window Dimensions</label>
+    <div id="window-list" class="window-list">
+      </div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="btn btn-secondary" onclick="addRow()">
+      <i class="bi bi-plus-circle"></i> Add Another Window
+    </button>
+  </div>
+
+  <button class="btn btn-primary" onclick="calculate()">
+    Generate Estimate <i class="bi bi-arrow-right-short" style="font-size: 22px;"></i>
+  </button>
+
+  <div class="result" id="output">
+    </div>
+</div>
+
+<script>
+// Initialize first row
+function addRow() {
+    const list = document.getElementById("window-list");
+    const row = document.createElement("div");
+    row.className = "window-row";
+    row.innerHTML = `
+        <div>
+            <label style="font-size: 12px; margin-bottom: 4px;">Length</label>
+            <input type="number" class="len" placeholder="e.g. 48" min="0" step="any">
+        </div>
+        <div>
+            <label style="font-size: 12px; margin-bottom: 4px;">Height</label>
+            <input type="number" class="ht" placeholder="e.g. 60" min="0" step="any">
+        </div>
+        <button class="btn-delete" onclick="this.parentElement.remove()" title="Remove Window">
+            <i class="bi bi-trash"></i>
+        </button>
+    `;
+    list.appendChild(row);
+}
+addRow(); // Call once on load
+
+function calculate() {
+    let type = document.getElementById("type").value;
+    let lengths = document.getElementsByClassName("len");
+    let heights = document.getElementsByClassName("ht");
+
+    let totalArea=0, totalKg=0, count=0;
+
+    let rubber=0,pvc=0,mosquito=0,glass=0;
+    let bearing=0,lock=0,khuniya=0,datta=0,cleat=0,angle=0;
+
+    // Rates
+    let rubberRate=9, pvcRate=2.5, mosquitoRate=20, glassRate=60;
+    let bearingRate=45, lockRate=150, angleRate=12;
+    let laborRate=35;
+
+    // Factors
+    let trackFactor=0, trackBottomFactor=0, handleFactor=0, interlockFactor=0.084375;
+    let shutters=3;
+
+    for (let i=0;i<lengths.length;i++){
+        let L=parseFloat(lengths[i].value);
+        let H=parseFloat(heights[i].value);
+        if(!L||!H) continue;
+
+        count++;
+        totalArea += L*H;
+
+        let shutterWidth=L/2;
+
+        let track=0, trackTopSide=0, trackBottom=0, handle=0, interlock=0;
+
+        // ===== SYSTEM SWITCH =====
+        if(type=="3dumal"){
+            shutters=3;
+            trackFactor=0.313;
+            handleFactor=0.21875;
+            interlockFactor=0.084375;
+
+            track = (2*L)+(2*H);
+            handle = (3*2*H)+(3*L);
+            interlock = H*3;
+
+            rubber += (2*(shutterWidth+H))*2;
+            pvc += 2*(shutterWidth+H);
+            mosquito += shutterWidth*H;
+            glass += (shutterWidth*H)*2;
+
+            bearing += 6;
+            lock += 3;
+            khuniya += 12;
+            datta += 6;
+            cleat += 24;
+            angle += 4;
+
+            totalKg += (track*trackFactor)+(handle*handleFactor)+(interlock*interlockFactor);
+        }
+        else if(type=="2dumal"){
+            shutters=2;
+            trackFactor=0.313;
+            handleFactor=0.21875;
+            interlockFactor=0.084375;
+
+            track = (2*L)+(2*H);
+            handle = (2*2*H)+(2*L);
+            interlock = H*2;
+
+            rubber += (2*(shutterWidth+H))*2;
+            glass += (shutterWidth*H)*2;
+
+            bearing += 4;
+            lock += 2;
+            khuniya += 8;
+            datta += 4;
+            cleat += 16;
+            angle += 4;
+
+            totalKg += (track*trackFactor)+(handle*handleFactor)+(interlock*interlockFactor);
+        }
+        else if(type=="34series"){
+            shutters=3;
+            trackFactor=0.173;
+            trackBottomFactor=0.2;
+            handleFactor=0.092;
+
+            rubberRate=5;
+            bearingRate=9;
+            lockRate=25;
+
+            trackTopSide = (2*H)+L;
+            trackBottom = L;
+            handle = (3*2*H)+(3*L);
+
+            rubber += (2*(shutterWidth+H))*2;
+            pvc += 2*(shutterWidth+H);
+            mosquito += shutterWidth*H;
+            glass += (shutterWidth*H)*2;
+
+            bearing += 6;
+            lock += 3;
+            angle += 4;
+            cleat += 0;
+            khuniya += 0;
+            datta += 0;
+
+            totalKg += (trackTopSide*trackFactor)+(trackBottom*trackBottomFactor)+(handle*handleFactor);
+        }
+        else if(type=="2_34"){
+            shutters=2;
+            trackFactor=0.173;
+            handleFactor=0.092;
+
+            rubberRate=5;
+            bearingRate=9;
+            lockRate=25;
+
+            track = (2*L)+(2*H);
+            handle = (2*2*H)+(2*L);
+
+            rubber += (2*(shutterWidth+H))*2;
+            glass += (shutterWidth*H)*2;
+
+            bearing += 4;
+            lock += 2;
+            angle += 4;
+            cleat += 0;
+            khuniya += 0;
+            datta += 0;
+
+            totalKg += (track*trackFactor)+(handle*handleFactor);
+        }
+    }
+
+    // COSTS
+    let aluminiumCost = totalKg*460;
+    let powderCost = totalKg*30;
+
+    let rubberCost = rubber*rubberRate;
+    let pvcCost = pvc*pvcRate;
+    let mosquitoCost = mosquito*mosquitoRate;
+    let glassCost = glass*glassRate;
+
+    let bearingCost = bearing*bearingRate;
+    let lockCost = lock*lockRate;
+    let khuniyaCost = khuniya*20;
+    let dattaCost = datta*10;
+    let cleatCost = cleat*0.25;
+    let angleCost = angle*angleRate;
+
+    let laborCost = totalArea*laborRate;
+
+    let baseTotal =
+        aluminiumCost+powderCost+
+        rubberCost+pvcCost+mosquitoCost+glassCost+
+        bearingCost+lockCost+khuniyaCost+
+        dattaCost+cleatCost+angleCost+
+        laborCost;
+
+    let profit = baseTotal*0.20;
+    let finalTotal = baseTotal+profit;
+
+    let costPerSqft = totalArea? baseTotal/totalArea:0;
+    let profitPerSqft = totalArea? profit/totalArea:0;
+    let finalCostPerSqft = totalArea? finalTotal/totalArea:0;
+
+    const outputDiv = document.getElementById("output");
+    outputDiv.classList.add("active");
+
+    outputDiv.innerHTML = `
+        <div class="estimate-card">
+            <h3>Final Selling Estimate</h3>
+            <div class="total-price">₹ ${finalTotal.toFixed(2)}</div>
+            <div class="estimate-badges">
+                <span class="badge"><i class="bi bi-aspect-ratio"></i> ${totalArea.toFixed(2)} sq.ft</span>
+                <span class="badge"><i class="bi bi-window-stack"></i> ${count} Windows</span>
+            </div>
+        </div>
+
+        <div class="breakdown-grid">
+            <div class="breakdown-item">
+                <span>Cost / Sq.ft</span>
+                <strong>₹ ${costPerSqft.toFixed(2)}</strong>
+            </div>
+            <div class="breakdown-item">
+                <span>Profit / Sq.ft</span>
+                <strong style="color: #10b981;">₹ ${profitPerSqft.toFixed(2)}</strong>
+            </div>
+            <div class="breakdown-item">
+                <span>Selling / Sq.ft</span>
+                <strong>₹ ${finalCostPerSqft.toFixed(2)}</strong>
+            </div>
+            <div class="breakdown-item">
+                <span>Est. Net Profit</span>
+                <strong style="color: #10b981;">₹ ${profit.toFixed(2)}</strong>
+            </div>
+        </div>
+
+        <div class="material-list">
+            <div class="material-header"><i class="bi bi-box-seam"></i> Core Materials & Labor</div>
+            <div class="material-row"><span>Aluminium Profile</span> <strong>₹ ${aluminiumCost.toFixed(2)}</strong></div>
+            <div class="material-row"><span>Powder Coating</span> <strong>₹ ${powderCost.toFixed(2)}</strong></div>
+            <div class="material-row"><span>Labor Cost</span> <strong>₹ ${laborCost.toFixed(2)}</strong></div>
+            <div class="material-row">
+                <span>Glass <span class="qty">(${glass.toFixed(1)} units)</span></span> 
+                <strong>₹ ${glassCost.toFixed(2)}</strong>
+            </div>
+            <div class="material-row">
+                <span>Mosquito Mesh <span class="qty">(${mosquito.toFixed(1)} units)</span></span> 
+                <strong>₹ ${mosquitoCost.toFixed(2)}</strong>
+            </div>
+            <div class="material-row">
+                <span>Rubber <span class="qty">(${rubber.toFixed(1)} units)</span></span> 
+                <strong>₹ ${rubberCost.toFixed(2)}</strong>
+            </div>
+            <div class="material-row">
+                <span>PVC Patti <span class="qty">(${pvc.toFixed(1)} units)</span></span> 
+                <strong>₹ ${pvcCost.toFixed(2)}</strong>
+            </div>
+            
+            <div class="material-header" style="border-top: 1px solid #e6e6e6;"><i class="bi bi-tools"></i> Hardware Breakdown</div>
+            <div class="material-row"><span>Bearings <span class="qty">(${bearing} pcs)</span></span> <strong>₹ ${bearingCost.toFixed(2)}</strong></div>
+            <div class="material-row"><span>Locks <span class="qty">(${lock} pcs)</span></span> <strong>₹ ${lockCost.toFixed(2)}</strong></div>
+            <div class="material-row"><span>Khuniya <span class="qty">(${khuniya} pcs)</span></span> <strong>₹ ${khuniyaCost.toFixed(2)}</strong></div>
+            <div class="material-row"><span>Datta <span class="qty">(${datta} pcs)</span></span> <strong>₹ ${dattaCost.toFixed(2)}</strong></div>
+            <div class="material-row"><span>Corner Cleat <span class="qty">(${cleat} pcs)</span></span> <strong>₹ ${cleatCost.toFixed(2)}</strong></div>
+            <div class="material-row"><span>Angle <span class="qty">(${angle} pcs)</span></span> <strong>₹ ${angleCost.toFixed(2)}</strong></div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 13px; color: #888;">
+            Rates Applied: Alu ₹460/kg | Powder ₹30/kg | Glass ₹60 | Rubber ₹${rubberRate}
+        </div>
+    `;
+    
+    // Smooth scroll to results
+    outputDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+
+</body>
+</html>
