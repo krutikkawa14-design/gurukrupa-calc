@@ -1,600 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gurukrupa Interior Works | Window Estimator Pro</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-
-  <style>
-    :root {
-      --brand-dark: #111111;
-      --brand-gold: #bb9a6b;
-      --brand-gold-hover: #a3855a;
-      --bg-color: #f8fafc;
-      --card-bg: #ffffff;
-      --text-main: #2b2b2b;
-      --text-muted: #666666;
-      --border-color: #e6e6e6;
-      --danger: #ef4444;
-      --danger-hover: #dc2626;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body { 
-      font-family: 'Poppins', sans-serif; 
-      background-color: var(--bg-color); 
-      color: var(--text-main);
-      line-height: 1.6;
-      padding-top: 80px; /* Space for fixed header */
-    }
-
-    /* HEADER */
-    header {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 80px;
-      background: rgba(2, 2, 2, 0.98);
-      backdrop-filter: blur(20px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    }
-    header h1 {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--brand-gold);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* MAIN CONTAINER */
-    .container { 
-      max-width: 800px; 
-      margin: 40px auto; 
-      background: var(--card-bg); 
-      padding: 40px; 
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-    }
-
-    .header-title {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 28px;
-      font-weight: 600;
-    }
-
-    /* FORM ELEMENTS */
-    .form-group {
-      margin-bottom: 25px;
-    }
-    .form-group label {
-      display: block;
-      font-weight: 500;
-      margin-bottom: 8px;
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-    select, input {
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      font-family: 'Poppins', sans-serif;
-      font-size: 15px;
-      transition: all 0.3s ease;
-      background: #fafafa;
-    }
-    select:focus, input:focus {
-      outline: none;
-      border-color: var(--brand-gold);
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(187, 154, 107, 0.1);
-    }
-
-    /* WINDOW ROWS (REPLACED TABLE) */
-    .window-list {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-    .window-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 15px;
-      align-items: end;
-      background: #fdfdfd;
-      padding: 15px;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      transition: border 0.3s;
-    }
-    .window-row:hover {
-      border-color: #d1d1d1;
-    }
-    
-    /* BUTTONS */
-    .btn {
-      padding: 14px 24px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 50px;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .btn-secondary {
-      background: #f0f0f0;
-      color: var(--brand-dark);
-    }
-    .btn-secondary:hover {
-      background: #e4e4e4;
-      transform: translateY(-2px);
-    }
-    .btn-primary {
-      background: var(--brand-dark);
-      color: #fff;
-      width: 100%;
-      margin-top: 20px;
-      font-size: 16px;
-      padding: 16px;
-    }
-    .btn-primary:hover {
-      background: var(--brand-gold);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(187, 154, 107, 0.3);
-    }
-    .btn-delete {
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--danger);
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      transition: all 0.3s;
-    }
-    .btn-delete:hover {
-      background: var(--danger);
-      color: #fff;
-    }
-
-    .action-buttons {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-
-    /* RESULTS SECTION */
-    .result { 
-      margin-top: 30px; 
-      display: none;
-      animation: fadeIn 0.5s ease;
-    }
-    .result.active {
-      display: block;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .estimate-card {
-      background: linear-gradient(135deg, var(--brand-dark) 0%, #2a2a2a 100%);
-      color: white;
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-      margin-bottom: 25px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-    }
-    .estimate-card h3 {
-      font-weight: 400;
-      font-size: 16px;
-      color: #ccc;
-      margin-bottom: 5px;
-    }
-    .estimate-card .total-price {
-      font-size: 42px;
-      font-weight: 700;
-      color: var(--brand-gold);
-      margin-bottom: 15px;
-    }
-    .estimate-badges {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .badge {
-      background: rgba(255,255,255,0.1);
-      padding: 8px 16px;
-      border-radius: 50px;
-      font-size: 14px;
-    }
-
-    .breakdown-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-    .breakdown-item {
-      background: #f8f8f8;
-      padding: 15px;
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid var(--border-color);
-    }
-    .breakdown-item span { color: var(--text-muted); font-size: 14px;}
-    .breakdown-item strong { font-weight: 600; color: var(--brand-dark); }
-
-    .material-list {
-      background: #fff;
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .material-header {
-      background: #f8f8f8;
-      padding: 15px 20px;
-      font-weight: 600;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .material-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 20px;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 14px;
-    }
-    .material-row:last-child { border-bottom: none; }
-    .material-row span.qty { color: var(--text-muted); font-size: 13px; }
-
-    /* RESPONSIVE DESIGN */
-    @media (max-width: 640px) {
-      .container {
-        margin: 20px;
-        padding: 25px;
-        width: auto;
-      }
-      .window-row {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-      .btn-delete {
-        width: 100%;
-        height: 45px;
-        margin-top: 5px;
-      }
-      .estimate-card .total-price {
-        font-size: 32px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gurukrupa Interior Works | Window Estimator</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#141414;--gold:#bb9a6b;--gold-d:#8f7346;--bg:#f4f2ee;--card:#fff;--muted:#6b6b6b;--line:#e4e0d8;--red:#d33;--green:#16803c}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+header{background:var(--ink);color:var(--gold);padding:calc(14px + env(safe-area-inset-top)) 18px 14px;font-weight:600;font-size:17px;position:sticky;top:0;z-index:20}
+header small{display:block;color:#aaa;font-weight:400;font-size:12px}
+main{max-width:640px;margin:0 auto;padding:16px}
+h2{font-size:15px;font-weight:600;margin:20px 0 10px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);background:#e9e5dc;border-radius:12px;padding:4px;gap:4px}
+.seg button{border:0;background:none;font:500 15px Poppins;padding:11px 0;border-radius:9px;color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--ink);color:#fff}
+.hint{font-size:12px;color:var(--muted);margin-top:6px}
+.win{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.win-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.win-top b{font-size:15px}
+.win-top .price{font-size:13px;color:var(--gold-d);font-weight:600}
+.icon{border:0;background:#f1eee8;border-radius:10px;width:44px;height:44px;font-size:17px;cursor:pointer}
+.icon.del{color:var(--red)}
+select,input{width:100%;font:500 18px Poppins;padding:0 14px;height:52px;border:1.5px solid var(--line);border-radius:12px;background:#fbfaf8;color:var(--ink)}
+select{font-size:15px}
+select:focus,input:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:0 0 0 4px rgba(187,154,107,.18)}
+.dims{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end;margin-top:10px}
+.dims label,.qty-l{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+.times{height:52px;display:flex;align-items:center;color:var(--muted);font-size:18px}
+.row2{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font-size:22px;cursor:pointer}
+.stepper span{min-width:28px;text-align:center;font-weight:600;font-size:17px}
+.area{font-size:13px;color:var(--muted)}
+.add{width:100%;height:52px;border:2px dashed var(--gold);background:none;color:var(--gold-d);border-radius:14px;font:600 15px Poppins;cursor:pointer}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 14px;margin-top:16px}
+summary{font-weight:600;font-size:14px;padding:12px 0;cursor:pointer}
+.rates{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-bottom:14px}
+.rates input{font-size:16px;height:46px}
+.hero{background:var(--ink);color:#fff;border-radius:18px;padding:22px;text-align:center;margin-top:8px}
+.hero small{color:#bbb}
+.hero .big{font-size:34px;font-weight:700;color:var(--gold)}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.chips span{background:rgba(255,255,255,.1);border-radius:99px;padding:5px 12px;font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.grid div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--muted)}
+.grid b{display:block;font-size:16px;color:var(--ink)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.list h3{font-size:13px;background:#f4f1ea;padding:10px 14px;font-weight:600}
+.list p{display:flex;justify-content:space-between;gap:10px;padding:9px 14px;border-bottom:1px solid #f0ede6;font-size:14px}
+.list p:last-child{border:0}
+.list em{font-style:normal;color:var(--muted);font-size:12px}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.acts button{height:50px;border-radius:12px;border:0;font:600 15px Poppins;cursor:pointer;background:#25d366;color:#fff}
+.acts button.alt{background:var(--ink)}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(20,20,20,.97);color:#fff;padding:12px 18px calc(12px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center;z-index:30}
+.bar small{color:#aaa;font-size:12px;display:block}
+.bar b{font-size:22px;color:var(--gold)}
+.bar button{background:var(--gold);color:var(--ink);border:0;border-radius:99px;padding:12px 20px;font:600 14px Poppins;cursor:pointer}
+.empty{text-align:center;color:var(--muted);font-size:14px;padding:22px 0}
+@media print{header,.bar,.add,.acts,details,.win .icon,.seg{display:none}body{background:#fff}}
+</style>
 </head>
-
 <body>
+<header>Gurukrupa Interior Works<small>Window estimator</small></header>
+<main>
+  <h2 style="margin-top:4px">Measurement unit</h2>
+  <div class="seg" id="units"></div>
+  <p class="hint">Aluminium and hardware formulas work in feet, so entries are converted automatically.</p>
 
-<header>
-  <h1>
-    <i class="bi bi-calculator-fill"></i>
-    <span>Gurukrupa Estimator</span>
-  </h1>
-</header>
+  <h2>Windows</h2>
+  <div id="wins"></div>
+  <button class="add" onclick="addWin()">+ Add window</button>
 
-<div class="container">
-  <h2 class="header-title">Window Estimator Pro</h2>
+  <details>
+    <summary>Rates and profit</summary>
+    <div class="rates" id="rates"></div>
+  </details>
 
-  <div class="form-group">
-    <label for="type">Select Window Series</label>
-    <select id="type">
-      <option value="3dumal">3 Track DUMAL</option>
-      <option value="2dumal">2 Track DUMAL</option>
-      <option value="34series">3 Track 3/4 Series</option>
-      <option value="2_34">2 Track 3/4 Series</option>
-    </select>
-  </div>
+  <div id="out"></div>
+</main>
 
-  <div class="form-group">
-    <label>Window Dimensions</label>
-    <div id="window-list" class="window-list">
-      </div>
-  </div>
-
-  <div class="action-buttons">
-    <button class="btn btn-secondary" onclick="addRow()">
-      <i class="bi bi-plus-circle"></i> Add Another Window
-    </button>
-  </div>
-
-  <button class="btn btn-primary" onclick="calculate()">
-    Generate Estimate <i class="bi bi-arrow-right-short" style="font-size: 22px;"></i>
-  </button>
-
-  <div class="result" id="output">
-    </div>
+<div class="bar">
+  <div><small id="barInfo">No windows yet</small><b id="barTotal">₹ 0</b></div>
+  <button onclick="document.getElementById('out').scrollIntoView({behavior:'smooth'})">View breakdown</button>
 </div>
 
 <script>
-// Initialize first row
-function addRow() {
-    const list = document.getElementById("window-list");
-    const row = document.createElement("div");
-    row.className = "window-row";
-    row.innerHTML = `
-        <div>
-            <label style="font-size: 12px; margin-bottom: 4px;">Length</label>
-            <input type="number" class="len" placeholder="e.g. 48" min="0" step="any">
-        </div>
-        <div>
-            <label style="font-size: 12px; margin-bottom: 4px;">Height</label>
-            <input type="number" class="ht" placeholder="e.g. 60" min="0" step="any">
-        </div>
-        <button class="btn-delete" onclick="this.parentElement.remove()" title="Remove Window">
-            <i class="bi bi-trash"></i>
-        </button>
-    `;
-    list.appendChild(row);
+const U = {ft:1, in:1/12, cm:1/30.48, mm:1/304.8};
+const DEF = {alu:460, powder:30, glass:60, mesh:20, pvc:2.5, angle:12, khuniya:20, datta:10, cleat:0.25, labor:35, profit:20};
+const RL = {alu:'Aluminium ₹/kg', powder:'Powder coat ₹/kg', glass:'Glass ₹/unit', mesh:'Mosquito mesh ₹/unit', pvc:'PVC patti ₹/unit', angle:'Angle ₹/pc', khuniya:'Khuniya ₹/pc', datta:'Datta ₹/pc', cleat:'Cleat ₹/pc', labor:'Labour ₹/sq.ft', profit:'Profit % on cost'};
+
+// Series settings: shutters, per-series rates, hardware counts, aluminium weight formula (kg per window, L/H in feet)
+const S = {
+  '3dumal':  {name:'3 Track DUMAL', rub:9, bear:45, lock:150, pvc:1, mesh:1,
+              hw:{bear:6, lock:3, khuniya:12, datta:6, cleat:24, angle:4},
+              kg:(L,H)=>(2*L+2*H)*.313 + (6*H+3*L)*.21875 + 3*H*.084375},
+  '2dumal':  {name:'2 Track DUMAL', rub:9, bear:45, lock:150, pvc:0, mesh:0,
+              hw:{bear:4, lock:2, khuniya:8, datta:4, cleat:16, angle:4},
+              kg:(L,H)=>(2*L+2*H)*.313 + (4*H+2*L)*.21875 + 2*H*.084375},
+  '34series':{name:'3 Track 3/4 Series', rub:5, bear:9, lock:25, pvc:1, mesh:1,
+              hw:{bear:6, lock:3, khuniya:0, datta:0, cleat:0, angle:4},
+              kg:(L,H)=>(2*H+L)*.173 + L*.2 + (6*H+3*L)*.092},
+  '2_34':    {name:'2 Track 3/4 Series', rub:5, bear:9, lock:25, pvc:0, mesh:0,
+              hw:{bear:4, lock:2, khuniya:0, datta:0, cleat:0, angle:4},
+              kg:(L,H)=>(2*L+2*H)*.173 + (4*H+2*L)*.092}
+};
+
+let unit = 'ft', uid = 0, W = [], R = {...DEF};
+try { R = {...DEF, ...JSON.parse(localStorage.getItem('gk_rates')||'{}')}; unit = localStorage.getItem('gk_unit') || 'ft'; } catch(e){}
+
+const $ = id => document.getElementById(id);
+const inr = n => '₹ ' + Math.round(n).toLocaleString('en-IN');
+const num = n => (Math.round(n*10)/10).toLocaleString('en-IN');
+
+function winCalc(w){
+  const f = U[unit], L = (+w.l||0)*f, H = (+w.h||0)*f, q = Math.max(1, +w.q||1);
+  if(!L || !H) return null;
+  const s = S[w.s], sw = L/2;
+  const n = {rub:2*(sw+H)*2*q, pvc:s.pvc?2*(sw+H)*q:0, mesh:s.mesh?sw*H*q:0, glass:sw*H*2*q};
+  for(const k in s.hw) n[k] = s.hw[k]*q;
+  const kg = s.kg(L,H)*q, area = L*H*q;
+  const c = {alu:kg*R.alu, powder:kg*R.powder, labor:area*R.labor, glass:n.glass*R.glass, mesh:n.mesh*R.mesh,
+    rub:n.rub*s.rub, pvc:n.pvc*R.pvc, bear:n.bear*s.bear, lock:n.lock*s.lock,
+    khuniya:n.khuniya*R.khuniya, datta:n.datta*R.datta, cleat:n.cleat*R.cleat, angle:n.angle*R.angle};
+  const base = Object.values(c).reduce((a,b)=>a+b,0);
+  return {area, kg, n, c, base, q};
 }
-addRow(); // Call once on load
 
-function calculate() {
-    let type = document.getElementById("type").value;
-    let lengths = document.getElementsByClassName("len");
-    let heights = document.getElementsByClassName("ht");
-
-    let totalArea=0, totalKg=0, count=0;
-
-    let rubber=0,pvc=0,mosquito=0,glass=0;
-    let bearing=0,lock=0,khuniya=0,datta=0,cleat=0,angle=0;
-
-    // Rates
-    let rubberRate=9, pvcRate=2.5, mosquitoRate=20, glassRate=60;
-    let bearingRate=45, lockRate=150, angleRate=12;
-    let laborRate=35;
-
-    // Factors
-    let trackFactor=0, trackBottomFactor=0, handleFactor=0, interlockFactor=0.084375;
-    let shutters=3;
-
-    for (let i=0;i<lengths.length;i++){
-        let L=parseFloat(lengths[i].value);
-        let H=parseFloat(heights[i].value);
-        if(!L||!H) continue;
-
-        count++;
-        totalArea += L*H;
-
-        let shutterWidth=L/2;
-
-        let track=0, trackTopSide=0, trackBottom=0, handle=0, interlock=0;
-
-        // ===== SYSTEM SWITCH =====
-        if(type=="3dumal"){
-            shutters=3;
-            trackFactor=0.313;
-            handleFactor=0.21875;
-            interlockFactor=0.084375;
-
-            track = (2*L)+(2*H);
-            handle = (3*2*H)+(3*L);
-            interlock = H*3;
-
-            rubber += (2*(shutterWidth+H))*2;
-            pvc += 2*(shutterWidth+H);
-            mosquito += shutterWidth*H;
-            glass += (shutterWidth*H)*2;
-
-            bearing += 6;
-            lock += 3;
-            khuniya += 12;
-            datta += 6;
-            cleat += 24;
-            angle += 4;
-
-            totalKg += (track*trackFactor)+(handle*handleFactor)+(interlock*interlockFactor);
-        }
-        else if(type=="2dumal"){
-            shutters=2;
-            trackFactor=0.313;
-            handleFactor=0.21875;
-            interlockFactor=0.084375;
-
-            track = (2*L)+(2*H);
-            handle = (2*2*H)+(2*L);
-            interlock = H*2;
-
-            rubber += (2*(shutterWidth+H))*2;
-            glass += (shutterWidth*H)*2;
-
-            bearing += 4;
-            lock += 2;
-            khuniya += 8;
-            datta += 4;
-            cleat += 16;
-            angle += 4;
-
-            totalKg += (track*trackFactor)+(handle*handleFactor)+(interlock*interlockFactor);
-        }
-        else if(type=="34series"){
-            shutters=3;
-            trackFactor=0.173;
-            trackBottomFactor=0.2;
-            handleFactor=0.092;
-
-            rubberRate=5;
-            bearingRate=9;
-            lockRate=25;
-
-            trackTopSide = (2*H)+L;
-            trackBottom = L;
-            handle = (3*2*H)+(3*L);
-
-            rubber += (2*(shutterWidth+H))*2;
-            pvc += 2*(shutterWidth+H);
-            mosquito += shutterWidth*H;
-            glass += (shutterWidth*H)*2;
-
-            bearing += 6;
-            lock += 3;
-            angle += 4;
-            cleat += 0;
-            khuniya += 0;
-            datta += 0;
-
-            totalKg += (trackTopSide*trackFactor)+(trackBottom*trackBottomFactor)+(handle*handleFactor);
-        }
-        else if(type=="2_34"){
-            shutters=2;
-            trackFactor=0.173;
-            handleFactor=0.092;
-
-            rubberRate=5;
-            bearingRate=9;
-            lockRate=25;
-
-            track = (2*L)+(2*H);
-            handle = (2*2*H)+(2*L);
-
-            rubber += (2*(shutterWidth+H))*2;
-            glass += (shutterWidth*H)*2;
-
-            bearing += 4;
-            lock += 2;
-            angle += 4;
-            cleat += 0;
-            khuniya += 0;
-            datta += 0;
-
-            totalKg += (track*trackFactor)+(handle*handleFactor);
-        }
-    }
-
-    // COSTS
-    let aluminiumCost = totalKg*460;
-    let powderCost = totalKg*30;
-
-    let rubberCost = rubber*rubberRate;
-    let pvcCost = pvc*pvcRate;
-    let mosquitoCost = mosquito*mosquitoRate;
-    let glassCost = glass*glassRate;
-
-    let bearingCost = bearing*bearingRate;
-    let lockCost = lock*lockRate;
-    let khuniyaCost = khuniya*20;
-    let dattaCost = datta*10;
-    let cleatCost = cleat*0.25;
-    let angleCost = angle*angleRate;
-
-    let laborCost = totalArea*laborRate;
-
-    let baseTotal =
-        aluminiumCost+powderCost+
-        rubberCost+pvcCost+mosquitoCost+glassCost+
-        bearingCost+lockCost+khuniyaCost+
-        dattaCost+cleatCost+angleCost+
-        laborCost;
-
-    let profit = baseTotal*0.20;
-    let finalTotal = baseTotal+profit;
-
-    let costPerSqft = totalArea? baseTotal/totalArea:0;
-    let profitPerSqft = totalArea? profit/totalArea:0;
-    let finalCostPerSqft = totalArea? finalTotal/totalArea:0;
-
-    const outputDiv = document.getElementById("output");
-    outputDiv.classList.add("active");
-
-    outputDiv.innerHTML = `
-        <div class="estimate-card">
-            <h3>Final Selling Estimate</h3>
-            <div class="total-price">₹ ${finalTotal.toFixed(2)}</div>
-            <div class="estimate-badges">
-                <span class="badge"><i class="bi bi-aspect-ratio"></i> ${totalArea.toFixed(2)} sq.ft</span>
-                <span class="badge"><i class="bi bi-window-stack"></i> ${count} Windows</span>
-            </div>
-        </div>
-
-        <div class="breakdown-grid">
-            <div class="breakdown-item">
-                <span>Cost / Sq.ft</span>
-                <strong>₹ ${costPerSqft.toFixed(2)}</strong>
-            </div>
-            <div class="breakdown-item">
-                <span>Profit / Sq.ft</span>
-                <strong style="color: #10b981;">₹ ${profitPerSqft.toFixed(2)}</strong>
-            </div>
-            <div class="breakdown-item">
-                <span>Selling / Sq.ft</span>
-                <strong>₹ ${finalCostPerSqft.toFixed(2)}</strong>
-            </div>
-            <div class="breakdown-item">
-                <span>Est. Net Profit</span>
-                <strong style="color: #10b981;">₹ ${profit.toFixed(2)}</strong>
-            </div>
-        </div>
-
-        <div class="material-list">
-            <div class="material-header"><i class="bi bi-box-seam"></i> Core Materials & Labor</div>
-            <div class="material-row"><span>Aluminium Profile</span> <strong>₹ ${aluminiumCost.toFixed(2)}</strong></div>
-            <div class="material-row"><span>Powder Coating</span> <strong>₹ ${powderCost.toFixed(2)}</strong></div>
-            <div class="material-row"><span>Labor Cost</span> <strong>₹ ${laborCost.toFixed(2)}</strong></div>
-            <div class="material-row">
-                <span>Glass <span class="qty">(${glass.toFixed(1)} units)</span></span> 
-                <strong>₹ ${glassCost.toFixed(2)}</strong>
-            </div>
-            <div class="material-row">
-                <span>Mosquito Mesh <span class="qty">(${mosquito.toFixed(1)} units)</span></span> 
-                <strong>₹ ${mosquitoCost.toFixed(2)}</strong>
-            </div>
-            <div class="material-row">
-                <span>Rubber <span class="qty">(${rubber.toFixed(1)} units)</span></span> 
-                <strong>₹ ${rubberCost.toFixed(2)}</strong>
-            </div>
-            <div class="material-row">
-                <span>PVC Patti <span class="qty">(${pvc.toFixed(1)} units)</span></span> 
-                <strong>₹ ${pvcCost.toFixed(2)}</strong>
-            </div>
-            
-            <div class="material-header" style="border-top: 1px solid #e6e6e6;"><i class="bi bi-tools"></i> Hardware Breakdown</div>
-            <div class="material-row"><span>Bearings <span class="qty">(${bearing} pcs)</span></span> <strong>₹ ${bearingCost.toFixed(2)}</strong></div>
-            <div class="material-row"><span>Locks <span class="qty">(${lock} pcs)</span></span> <strong>₹ ${lockCost.toFixed(2)}</strong></div>
-            <div class="material-row"><span>Khuniya <span class="qty">(${khuniya} pcs)</span></span> <strong>₹ ${khuniyaCost.toFixed(2)}</strong></div>
-            <div class="material-row"><span>Datta <span class="qty">(${datta} pcs)</span></span> <strong>₹ ${dattaCost.toFixed(2)}</strong></div>
-            <div class="material-row"><span>Corner Cleat <span class="qty">(${cleat} pcs)</span></span> <strong>₹ ${cleatCost.toFixed(2)}</strong></div>
-            <div class="material-row"><span>Angle <span class="qty">(${angle} pcs)</span></span> <strong>₹ ${angleCost.toFixed(2)}</strong></div>
-        </div>
-
-        <div style="text-align: center; margin-top: 20px; font-size: 13px; color: #888;">
-            Rates Applied: Alu ₹460/kg | Powder ₹30/kg | Glass ₹60 | Rubber ₹${rubberRate}
-        </div>
-    `;
-    
-    // Smooth scroll to results
-    outputDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function addWin(copy){
+  W.push(copy ? {...copy, id:++uid} : {id:++uid, s:W.length?W[W.length-1].s:'3dumal', l:'', h:'', q:1});
+  draw();
+  if(!copy){ const i = document.querySelectorAll('.win')[W.length-1].querySelector('.l'); i.focus(); }
 }
+function delWin(id){ W = W.filter(w=>w.id!==id); draw(); }
+function dupWin(id){ addWin(W.find(w=>w.id===id)); }
+function setQ(id,d){ const w=W.find(x=>x.id===id); w.q=Math.max(1,(+w.q||1)+d); draw(); }
+function setUnit(u){ unit=u; try{localStorage.setItem('gk_unit',u)}catch(e){} drawUnits(); draw(); }
+
+function drawUnits(){
+  $('units').innerHTML = Object.keys(U).map(u=>`<button class="${u===unit?'on':''}" onclick="setUnit('${u}')">${u==='in'?'inch':u}</button>`).join('');
+}
+
+function draw(){
+  $('wins').innerHTML = W.length ? W.map((w,i)=>`
+    <div class="win" data-id="${w.id}">
+      <div class="win-top"><b>Window ${i+1}</b><span class="price"></span></div>
+      <select class="s" aria-label="Series">${Object.entries(S).map(([k,v])=>`<option value="${k}" ${k===w.s?'selected':''}>${v.name}</option>`).join('')}</select>
+      <div class="dims">
+        <div><label>Length (${unit})</label><input class="l" type="number" inputmode="decimal" enterkeyhint="next" min="0" step="any" placeholder="0" value="${w.l}"></div>
+        <div class="times">×</div>
+        <div><label>Height (${unit})</label><input class="h" type="number" inputmode="decimal" enterkeyhint="done" min="0" step="any" placeholder="0" value="${w.h}"></div>
+      </div>
+      <div class="row2">
+        <div><span class="qty-l">Quantity</span><div class="stepper"><button onclick="setQ(${w.id},-1)" aria-label="Less">−</button><span>${w.q}</span><button onclick="setQ(${w.id},1)" aria-label="More">+</button></div></div>
+        <div class="area"></div>
+        <div style="display:flex;gap:8px"><button class="icon" onclick="dupWin(${w.id})" title="Duplicate">⧉</button><button class="icon del" onclick="delWin(${w.id})" title="Remove">✕</button></div>
+      </div>
+    </div>`).join('') : '<p class="empty">Add a window to start the estimate.</p>';
+  document.querySelectorAll('.win').forEach(el=>{
+    const w = W.find(x=>x.id==el.dataset.id);
+    el.querySelector('.s').onchange = e=>{ w.s=e.target.value; update(); };
+    el.querySelector('.l').oninput = e=>{ w.l=e.target.value; update(); };
+    el.querySelector('.h').oninput = e=>{ w.h=e.target.value; update(); };
+  });
+  update();
+}
+
+function update(){
+  const T = {area:0, kg:0, base:0, count:0, n:{}, c:{}};
+  document.querySelectorAll('.win').forEach(el=>{
+    const w = W.find(x=>x.id==el.dataset.id), r = winCalc(w);
+    el.querySelector('.area').textContent = r ? num(r.area)+' sq.ft' : 'Enter size';
+    el.querySelector('.price').textContent = r ? inr(r.base*(1+R.profit/100)) : '';
+    if(!r) return;
+    T.area+=r.area; T.kg+=r.kg; T.base+=r.base; T.count+=r.q;
+    for(const k in r.n) T.n[k]=(T.n[k]||0)+r.n[k];
+    for(const k in r.c) T.c[k]=(T.c[k]||0)+r.c[k];
+  });
+  T.profit = T.base*R.profit/100; T.final = T.base+T.profit;
+  window._T = T;
+  $('barTotal').textContent = inr(T.final);
+  $('barInfo').textContent = T.count ? `${T.count} window${T.count>1?'s':''} · ${num(T.area)} sq.ft` : 'No windows yet';
+  if(!T.count){ $('out').innerHTML=''; return; }
+  const a = T.area, c = T.c, n = T.n;
+  const line = (l,q,v)=>`<p><span>${l}${q?` <em>${q}</em>`:''}</span><b>${inr(v)}</b></p>`;
+  $('out').innerHTML = `
+    <div class="hero"><small>Final selling estimate</small><div class="big">${inr(T.final)}</div>
+      <div class="chips"><span>${num(a)} sq.ft</span><span>${T.count} windows</span><span>${num(T.kg)} kg aluminium</span></div></div>
+    <div class="grid">
+      <div>Cost / sq.ft<b>${inr(T.base/a)}</b></div>
+      <div>Selling / sq.ft<b>${inr(T.final/a)}</b></div>
+      <div>Profit / sq.ft<b style="color:var(--green)">${inr(T.profit/a)}</b></div>
+      <div>Total profit<b style="color:var(--green)">${inr(T.profit)}</b></div>
+    </div>
+    <div class="list"><h3>Materials and labour</h3>
+      ${line('Aluminium profile',num(T.kg)+' kg',c.alu)}${line('Powder coating','',c.powder)}${line('Labour','',c.labor)}
+      ${line('Glass',num(n.glass)+' units',c.glass)}${line('Mosquito mesh',num(n.mesh)+' units',c.mesh)}
+      ${line('Rubber',num(n.rub)+' units',c.rub)}${line('PVC patti',num(n.pvc)+' units',c.pvc)}
+      <h3>Hardware</h3>
+      ${line('Bearings',n.bear+' pcs',c.bear)}${line('Locks',n.lock+' pcs',c.lock)}${line('Khuniya',n.khuniya+' pcs',c.khuniya)}
+      ${line('Datta',n.datta+' pcs',c.datta)}${line('Corner cleat',n.cleat+' pcs',c.cleat)}${line('Angle',n.angle+' pcs',c.angle)}
+    </div>
+    <div class="acts"><button onclick="share()">Share on WhatsApp</button><button class="alt" onclick="window.print()">Print / Save PDF</button></div>`;
+}
+
+function share(){
+  const T = window._T; let t = '*Gurukrupa Interior Works – Window Estimate*\n\n';
+  W.forEach((w,i)=>{ const r=winCalc(w); if(r) t += `${i+1}. ${S[w.s].name}: ${w.l} × ${w.h} ${unit} × ${w.q} = ${num(r.area)} sq.ft – ${inr(r.base*(1+R.profit/100))}\n`; });
+  t += `\nTotal area: ${num(T.area)} sq.ft\n*Total: ${inr(T.final)}*`;
+  window.open('https://wa.me/?text='+encodeURIComponent(t), '_blank');
+}
+
+// Rates panel
+$('rates').innerHTML = Object.keys(DEF).map(k=>`<div><label class="qty-l">${RL[k]}</label><input type="number" inputmode="decimal" step="any" data-k="${k}" value="${R[k]}"></div>`).join('');
+$('rates').addEventListener('input', e=>{
+  const k = e.target.dataset.k; if(!k) return;
+  R[k] = e.target.value===''?0:parseFloat(e.target.value);
+  try{localStorage.setItem('gk_rates', JSON.stringify(R))}catch(err){}
+  update();
+});
+
+drawUnits();
+addWin();
 </script>
-
 </body>
 </html>
